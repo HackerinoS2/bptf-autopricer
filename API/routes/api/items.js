@@ -40,19 +40,23 @@ router.get('/:sku', async (req, res) => {
 });
 
 // Get pricelist.
-router.get('/', (req, res) => {
+router.get('/', (req, res) => async () => {
     // Read pricelist into memory and send.
-    fs.readFile(PRICELIST_PATH, 'utf8', (err, data) => {
-        if(err) {
-            console.error(err);
-            return res.status(400).json({ error: 'Failed to load pricelist.'});
-        }
+    // fs.readFile(PRICELIST_PATH, 'utf8', (err, data) => {
+    //     if(err) {
+    //         console.error(err);
+    //         return res.status(400).json({ error: 'Failed to load pricelist.'});
+    //     }
 
-        data = JSON.parse(data);
+    //     data = JSON.parse(data);
 
-        // Send pricelist to requestor.
-        return res.status(200).json(data);
-    });
+    //     // Send pricelist to requestor.
+    //     return res.status(200).json(data);
+    // });
+
+    let data = await db.result(`SELECT * FROM pricelist`);
+
+    return res.status(200).json(data);
 });
 
 // Request check endpoint. For now this will do
