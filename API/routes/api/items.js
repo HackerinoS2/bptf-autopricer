@@ -10,7 +10,7 @@ const PRICELIST_PATH = './files/pricelist.json'
 const ITEM_LIST_PATH = './files/item_list.json';
 
 // Import pg connection instance.
-const { db } = require('./pg-instance.js');
+const { db } = require('../../../pg-instance.js');
 
 // Get item price by SKU.
 router.get('/:sku', async (req, res) => {
