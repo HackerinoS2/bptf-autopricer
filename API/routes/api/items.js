@@ -28,7 +28,12 @@ router.get('/:sku', async (req, res) => {
   }
 
   // Get results from the pricelist
-  item_object = await db.oneOrNone('SELECT * FROM pricelist WHERE sku = $1', [req.params.sku]);
+  try {
+    item_object = await db.oneOrNone('SELECT * FROM pricelist WHERE sku = $1', [req.params.sku]);
+  } catch (error) {
+    console.error('Error fetching pricelist:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 
   // Item was not found in the pricelist.
   if (item_object === null) {
@@ -40,23 +45,17 @@ router.get('/:sku', async (req, res) => {
 });
 
 // Get pricelist.
-router.get('/', (req, res) => async () => {
-    // Read pricelist into memory and send.
-    // fs.readFile(PRICELIST_PATH, 'utf8', (err, data) => {
-    //     if(err) {
-    //         console.error(err);
-    //         return res.status(400).json({ error: 'Failed to load pricelist.'});
-    //     }
-
-    //     data = JSON.parse(data);
-
-    //     // Send pricelist to requestor.
-    //     return res.status(200).json(data);
-    // });
-
-    let data = await db.result(`SELECT * FROM pricelist`);
-
-    return res.status(200).json(data);
+router.get('/', async (req, res) => {
+  try {
+      // Fetch pricelist from the database
+      let data = await db.any('SELECT * FROM pricelist');
+      
+      // Send response
+      res.status(200).json(data);
+  } catch (error) {
+      console.error('Error fetching pricelist:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
 // Request check endpoint. For now this will do
