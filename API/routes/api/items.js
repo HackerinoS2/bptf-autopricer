@@ -31,7 +31,7 @@ router.get('/:sku', async (req, res) => {
   item_object = await db.oneOrNone('SELECT * FROM pricelist WHERE sku = $1', [req.params.sku]);
 
   // Item was not found in the pricelist.
-  if (result === null) {
+  if (item_object === null) {
     return res.sendStatus(404);
   }
 
