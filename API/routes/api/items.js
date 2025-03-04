@@ -31,7 +31,7 @@ router.get('/:sku', async (req, res) => {
   try {
     item_object = await db.oneOrNone('SELECT * FROM pricelist WHERE sku = $1', [req.params.sku]);
   } catch (error) {
-    console.error('Error fetching pricelist:', error);
+    console.error('Error fetching item from pricelist:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 
