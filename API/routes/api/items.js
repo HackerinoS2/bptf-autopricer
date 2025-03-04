@@ -37,36 +37,6 @@ router.get('/:sku', async (req, res) => {
 
   // Item found, send item object as response.
   return res.status(200).json(item_object);
-
-  // TODO: Convert it to a json
-
-  // fs.readFile(PRICELIST_PATH, 'utf8', (err, data) => {
-  //     if(err) {
-  //       // req.reject etc.
-  //       return res.status(400).json({ error: 'Failed to load pricelist.'});
-  //     }
-
-  //   let sku = req.params.sku;
-  //   data = JSON.parse(data);
-
-  //   // Iterate over each item in the items JSON array.
-  //   for (const item of data.items) {
-  //     // Find the requested item.
-  //     if (item.sku === sku) {
-  //       item_found = true;
-  //       item_object = item;
-  //       break;
-  //     }
-  //   }
-
-  //   // Item found, send item object as response.
-  //   if(item_found) {
-  //     return res.status(200).json(item_object);
-  //   } else {
-  //     // Item was not found in the pricelist.
-  //     return res.sendStatus(404);
-  //   }
-  // });
 });
 
 // Get pricelist.
