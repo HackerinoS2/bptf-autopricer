@@ -30,18 +30,18 @@ router.get('/:sku', async (req, res) => {
   // Get results from the pricelist
   try {
     item_object = await db.oneOrNone('SELECT * FROM pricelist WHERE sku = $1', [req.params.sku]);
+
+    // Item was not found in the pricelist.
+    if (!item_object) {
+      return res.sendStatus(404);
+    }
+
+    // Item found, send item object as response.
+    return res.status(200).json(item_object);
   } catch (error) {
     console.error('Error fetching item from pricelist:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
-
-  // Item was not found in the pricelist.
-  if (item_object === null) {
-    return res.sendStatus(404);
-  }
-
-  // Item found, send item object as response.
-  return res.status(200).json(item_object);
 });
 
 // Get pricelist.
