@@ -51,10 +51,10 @@ router.get('/', async (req, res) => {
       let data = await db.any('SELECT * FROM pricelist');
       
       // Send response
-      res.status(200).json(data);
+      return res.status(200).json(data);
   } catch (error) {
       console.error('Error fetching pricelist:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
+      return res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
